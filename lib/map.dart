@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stesh/secrets.dart';
+import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -12,15 +17,81 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  static final LatLng _MapCenter = LatLng(-26.31667, 31.13333);
+  static final CameraPosition _InitialPosition =
+      CameraPosition(target: _MapCenter, zoom: 20.0, tilt: 0, bearing: 0);
+
+  TextEditingController _sourceController = TextEditingController();
+  TextEditingController _destinationController = TextEditingController();
+
+  var uuid = new Uuid();
+  String _sessionToken = new Uuid().toString();
+  List<dynamic> _placeList = [];
+
+  late var _textField;
+
+  void getSuggestion(String input) async {
+    String kPLACESAPIKEY = Secrets.API_KEY;
+    String type = '(regions)';
+    String baseURL =
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json';
+    String request =
+        '$baseURL?input=$input&key=$kPLACESAPIKEY&sessiontoken=$_sessionToken';
+
+    var response = await http.get(Uri.parse(request));
+    if (response.statusCode == 200) {
+      setState(() {
+        _placeList = jsonDecode(response.body)['predictions'];
+      });
+    } else {
+      throw Exception('Failed to load predictions');
+    }
+  }
+
+  void _source_onChanged() {
+    _textField = 'source';
+    if (_sessionToken == null) {
+      setState(() {
+        _sessionToken = uuid.v4();
+      });
+    }
+    getSuggestion(_sourceController.text);
+  }
+
+  void _destination_onChanged() {
+    _textField = 'destination';
+    if (_sessionToken == null) {
+      setState(() {
+        _sessionToken = uuid.v4();
+      });
+    }
+    getSuggestion(_destinationController.text);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _sourceController.addListener(() {
+      _source_onChanged();
+    });
+    _destinationController.addListener(() {
+      _destination_onChanged();
+    });
+  }
+
+  @override
+  void dispose() {
+    _sourceController.dispose();
+    _destinationController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
     // Map related valuse
-    final LatLng _MapCenter = LatLng(-26.31667, 31.13333);
-    final CameraPosition _InitialPosition =
-        CameraPosition(target: _MapCenter, zoom: 20.0, tilt: 0, bearing: 0);
 
     return SizedBox(
       height: height,
@@ -47,7 +118,7 @@ class _MapScreenState extends State<MapScreen> {
                         Expanded(
                           flex: 5,
                           child: TextField(
-                            // controller: fullnameController,
+                            controller: _sourceController,
                             decoration: InputDecoration(
                                 hintStyle: GoogleFonts.roboto(
                                     color: Colors.white,
@@ -100,7 +171,7 @@ class _MapScreenState extends State<MapScreen> {
                         Expanded(
                           flex: 5,
                           child: TextField(
-                            // controller: fullnameController,
+                            controller: _destinationController,
                             decoration: InputDecoration(
                                 hintStyle: GoogleFonts.roboto(
                                     color: Colors.white,
@@ -124,10 +195,11 @@ class _MapScreenState extends State<MapScreen> {
                             child: Ink(
                               child: IconButton(
                                 splashColor: Colors.amber,
+                                disabledColor: Colors.grey,
                                 color: const Color(0xff757575),
-                                onPressed: () {
-                                  _showConfirmationDialog();
-                                },
+                                onPressed: () => _showConfirmationDialog(
+                                    _sourceController.text,
+                                    _destinationController.text),
                                 icon: const Icon(
                                   Icons.search,
                                   color: Color(0xffffa700),
@@ -138,6 +210,39 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       ],
                     ),
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _placeList.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            onTap: () {
+                              setState(() {
+                                WidgetsBinding
+                                    .instance.focusManager.primaryFocus
+                                    ?.unfocus();
+                                if (_textField == 'source') {
+                                  _sourceController.text =
+                                      _placeList[index]['description'];
+                                  _placeList = [];
+                                } else if (_textField == 'destination') {
+                                  _destinationController.text =
+                                      _placeList[index]['description'];
+                                  _placeList = [];
+                                }
+                              });
+                            },
+                            leading: Icon(
+                              Icons.location_on_outlined,
+                              color: Colors.white30,
+                            ),
+                            title: Text(
+                              _placeList[index]['description'],
+                              style:
+                                  GoogleFonts.robotoMono(color: Colors.white),
+                            ),
+                          );
+                        })
                   ],
                 )
               ],
@@ -148,7 +253,8 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
-  Future<void> _showConfirmationDialog() async {
+  Future<void> _showConfirmationDialog(
+      String _source, String _destination) async {
     return showDialog(
       context: context,
       builder: ((context) {
@@ -184,7 +290,7 @@ class _MapScreenState extends State<MapScreen> {
                           Expanded(
                             flex: 4,
                             child: Text(
-                              "Corner Plaza",
+                              _source,
                               style: GoogleFonts.roboto(
                                   fontSize: 18, color: Colors.white),
                             ),
@@ -207,7 +313,7 @@ class _MapScreenState extends State<MapScreen> {
                           Expanded(
                             flex: 4,
                             child: Text(
-                              "Malkerns Square",
+                              _destination,
                               style: GoogleFonts.roboto(
                                   fontSize: 18, color: Colors.white),
                             ),
