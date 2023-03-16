@@ -30,13 +30,16 @@ class _MapScreenState extends State<MapScreen> {
 
   late var _textField;
 
-  void getSuggestion(String input) async {
+  void getSuggestion(
+    String input,
+  ) async {
+    String country = 'SZ';
     String kPLACESAPIKEY = Secrets.API_KEY;
     String type = '(regions)';
     String baseURL =
         'https://maps.googleapis.com/maps/api/place/autocomplete/json';
     String request =
-        '$baseURL?input=$input&key=$kPLACESAPIKEY&sessiontoken=$_sessionToken';
+        '$baseURL?input=$input&components=country:$country&key=$kPLACESAPIKEY&sessiontoken=$_sessionToken';
 
     var response = await http.get(Uri.parse(request));
     if (response.statusCode == 200) {
