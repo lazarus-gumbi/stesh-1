@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stesh/secrets.dart';
@@ -17,6 +19,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  late GoogleMapController _mapController;
   static final LatLng _MapCenter = LatLng(-26.31667, 31.13333);
   static final CameraPosition _InitialPosition =
       CameraPosition(target: _MapCenter, zoom: 20.0, tilt: 0, bearing: 0);
@@ -29,6 +32,82 @@ class _MapScreenState extends State<MapScreen> {
   List<dynamic> _placeList = [];
 
   late var _textField;
+
+  List<Marker> _markers = [];
+
+  Set<Polyline> polylines = Set();
+
+  Future<void> _addMarkersToMap(
+      String source_address, String destination_address) async {
+    final markers =
+        await _getMarkersFromAddresses(source_address, destination_address);
+    setState(() {
+      _markers = markers;
+    });
+  }
+
+  Future<List<Marker>> _getMarkersFromAddresses(
+      String source_address, String destination_address) async {
+    final _sourceLatLng = await _getLatLngFromAddress(source_address);
+    final destinationLatLng = await _getLatLngFromAddress(destination_address);
+
+    final source_marker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      markerId: MarkerId('source_marker'),
+      position: LatLng(_sourceLatLng.latitude, _sourceLatLng.longitude),
+    );
+
+    final destination_marker = Marker(
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      markerId: MarkerId('destination_marker'),
+      position: LatLng(destinationLatLng.latitude, destinationLatLng.longitude),
+    );
+
+    _getDirections(_sourceLatLng, destinationLatLng);
+
+    return [source_marker, destination_marker];
+  }
+
+  Future<void> _getDirections(LatLng source, LatLng destination) async {
+    String kPLACESAPIKEY = Secrets.API_KEY;
+    var url =
+        'https://maps.googleapis.com/maps/api/directions/json?origin=${source.latitude},${source.longitude}&destination=${destination.latitude},${destination.longitude}&mode=driving&key=$kPLACESAPIKEY';
+    var response = await http.get(Uri.parse(url));
+    var decoded = json.decode(response.body);
+
+    // List<LatLng> points = [];
+    // decoded['routes'][0]['legs'][0]['steps'].forEach((step) {
+    //   points.add(
+    //       LatLng(step['start_location']['lat'], step['start_location']['lng']));
+    //   points.add(
+    //       LatLng(step['end_location']['lat'], step['end_location']['lng']));
+    // });
+
+    // List<LatLng> points = PolylinePoints()
+    //   .decodePolyline(decoded['routes'][0]['overview_polyline']['points'])
+    //   .map((point) => LatLng(point.latitude, point.longitude))
+    //   .toList();
+
+    List<PointLatLng> result = PolylinePoints()
+        .decodePolyline(decoded['routes'][0]['overview_polyline']['points']);
+    var points =
+        result.map((point) => LatLng(point.latitude, point.longitude)).toList();
+
+    setState(() {
+      polylines.clear();
+      polylines.add(Polyline(
+          polylineId: PolylineId('route'),
+          color: Color(0xffffa700),
+          zIndex: 10,
+          points: points));
+    });
+  }
+
+  Future<LatLng> _getLatLngFromAddress(String address) async {
+    final location = await locationFromAddress(address);
+    // final loc = await
+    return LatLng(location.first.latitude, location.first.longitude);
+  }
 
   void getSuggestion(
     String input,
@@ -101,7 +180,11 @@ class _MapScreenState extends State<MapScreen> {
       width: width,
       child: Stack(
         children: [
-          GoogleMap(initialCameraPosition: _InitialPosition),
+          GoogleMap(
+            initialCameraPosition: _InitialPosition,
+            markers: _markers.toSet(),
+            polylines: polylines,
+          ),
           Container(
             color: const Color(0xff25202C),
             padding: const EdgeInsets.fromLTRB(15, 40, 20, 20),
@@ -200,9 +283,13 @@ class _MapScreenState extends State<MapScreen> {
                                 splashColor: Colors.amber,
                                 disabledColor: Colors.grey,
                                 color: const Color(0xff757575),
-                                onPressed: () => _showConfirmationDialog(
-                                    _sourceController.text,
-                                    _destinationController.text),
+                                onPressed: () {
+                                  _showConfirmationDialog(
+                                      _sourceController.text,
+                                      _destinationController.text);
+                                  _addMarkersToMap(_sourceController.text,
+                                      _destinationController.text);
+                                },
                                 icon: const Icon(
                                   Icons.search,
                                   color: Color(0xffffa700),
