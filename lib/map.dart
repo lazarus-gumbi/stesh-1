@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -37,12 +38,34 @@ class _MapScreenState extends State<MapScreen> {
 
   Set<Polyline> polylines = Set();
 
+  void _onMapCreated(GoogleMapController controller) {
+    _mapController = controller;
+  }
+
   Future<void> _addMarkersToMap(
       String source_address, String destination_address) async {
     final markers =
         await _getMarkersFromAddresses(source_address, destination_address);
     setState(() {
       _markers = markers;
+
+      _mapController.animateCamera(
+        CameraUpdate.newLatLngBounds(
+          LatLngBounds(
+            southwest: LatLng(
+                _markers.map((marker) => marker.position.latitude).reduce(min),
+                _markers
+                    .map((marker) => marker.position.longitude)
+                    .reduce(min)),
+            northeast: LatLng(
+                _markers.map((marker) => marker.position.latitude).reduce(max),
+                _markers
+                    .map((marker) => marker.position.longitude)
+                    .reduce(max)),
+          ),
+          50.0,
+        ),
+      );
     });
   }
 
@@ -74,19 +97,6 @@ class _MapScreenState extends State<MapScreen> {
         'https://maps.googleapis.com/maps/api/directions/json?origin=${source.latitude},${source.longitude}&destination=${destination.latitude},${destination.longitude}&mode=driving&key=$kPLACESAPIKEY';
     var response = await http.get(Uri.parse(url));
     var decoded = json.decode(response.body);
-
-    // List<LatLng> points = [];
-    // decoded['routes'][0]['legs'][0]['steps'].forEach((step) {
-    //   points.add(
-    //       LatLng(step['start_location']['lat'], step['start_location']['lng']));
-    //   points.add(
-    //       LatLng(step['end_location']['lat'], step['end_location']['lng']));
-    // });
-
-    // List<LatLng> points = PolylinePoints()
-    //   .decodePolyline(decoded['routes'][0]['overview_polyline']['points'])
-    //   .map((point) => LatLng(point.latitude, point.longitude))
-    //   .toList();
 
     List<PointLatLng> result = PolylinePoints()
         .decodePolyline(decoded['routes'][0]['overview_polyline']['points']);
@@ -181,6 +191,7 @@ class _MapScreenState extends State<MapScreen> {
       child: Stack(
         children: [
           GoogleMap(
+            onMapCreated: _onMapCreated,
             initialCameraPosition: _InitialPosition,
             markers: _markers.toSet(),
             polylines: polylines,
