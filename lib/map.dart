@@ -38,6 +38,8 @@ class _MapScreenState extends State<MapScreen> {
 
   Set<Polyline> polylines = Set();
 
+  bool _buttonEnable = false;
+
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
   }
@@ -140,6 +142,13 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  void _validateInputs() {
+    setState(() {
+      _buttonEnable = _sourceController.text.isNotEmpty &&
+          _destinationController.text.isNotEmpty;
+    });
+  }
+
   void _source_onChanged() {
     _textField = 'source';
     if (_sessionToken == null) {
@@ -164,9 +173,11 @@ class _MapScreenState extends State<MapScreen> {
   void initState() {
     super.initState();
     _sourceController.addListener(() {
+      _validateInputs();
       _source_onChanged();
     });
     _destinationController.addListener(() {
+      _validateInputs();
       _destination_onChanged();
     });
   }
@@ -229,7 +240,7 @@ class _MapScreenState extends State<MapScreen> {
                                 color: Colors.white, fontSize: 20),
                           ),
                         ),
-                        Expanded(
+                        const Expanded(
                             flex: 1,
                             child: SizedBox(
                               width: 10,
@@ -294,13 +305,15 @@ class _MapScreenState extends State<MapScreen> {
                                 splashColor: Colors.amber,
                                 disabledColor: Colors.grey,
                                 color: const Color(0xff757575),
-                                onPressed: () {
-                                  _showConfirmationDialog(
-                                      _sourceController.text,
-                                      _destinationController.text);
-                                  _addMarkersToMap(_sourceController.text,
-                                      _destinationController.text);
-                                },
+                                onPressed: _buttonEnable
+                                    ? () {
+                                        _showConfirmationDialog(
+                                            _sourceController.text,
+                                            _destinationController.text);
+                                        _addMarkersToMap(_sourceController.text,
+                                            _destinationController.text);
+                                      }
+                                    : null,
                                 icon: const Icon(
                                   Icons.search,
                                   color: Color(0xffffa700),
