@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,22 +19,22 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController _mapController;
-  static final LatLng _MapCenter = LatLng(-26.31667, 31.13333);
+  static const LatLng _MapCenter = LatLng(-26.31667, 31.13333);
   static final CameraPosition _InitialPosition =
-      CameraPosition(target: _MapCenter, zoom: 20.0, tilt: 0, bearing: 0);
+      const CameraPosition(target: _MapCenter, zoom: 20.0, tilt: 0, bearing: 0);
 
-  TextEditingController _sourceController = TextEditingController();
-  TextEditingController _destinationController = TextEditingController();
+  final TextEditingController _sourceController = TextEditingController();
+  final TextEditingController _destinationController = TextEditingController();
 
-  var uuid = new Uuid();
-  String _sessionToken = new Uuid().toString();
+  var uuid = const Uuid();
+  String _sessionToken = const Uuid().toString();
   List<dynamic> _placeList = [];
 
   late var _textField;
 
   List<Marker> _markers = [];
 
-  Set<Polyline> polylines = Set();
+  Set<Polyline> polylines = {};
 
   bool _buttonEnable = false;
 
@@ -45,9 +43,9 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _addMarkersToMap(
-      String source_address, String destination_address) async {
+      String sourceAddress, String destinationAddress) async {
     final markers =
-        await _getMarkersFromAddresses(source_address, destination_address);
+        await _getMarkersFromAddresses(sourceAddress, destinationAddress);
     setState(() {
       _markers = markers;
 
@@ -72,25 +70,25 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<List<Marker>> _getMarkersFromAddresses(
-      String source_address, String destination_address) async {
-    final _sourceLatLng = await _getLatLngFromAddress(source_address);
-    final destinationLatLng = await _getLatLngFromAddress(destination_address);
+      String sourceAddress, String destinationAddress) async {
+    final sourceLatLng = await _getLatLngFromAddress(sourceAddress);
+    final destinationLatLng = await _getLatLngFromAddress(destinationAddress);
 
-    final source_marker = Marker(
+    final sourceMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      markerId: MarkerId('source_marker'),
-      position: LatLng(_sourceLatLng.latitude, _sourceLatLng.longitude),
+      markerId: const MarkerId('source_marker'),
+      position: LatLng(sourceLatLng.latitude, sourceLatLng.longitude),
     );
 
-    final destination_marker = Marker(
+    final destinationMarker = Marker(
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      markerId: MarkerId('destination_marker'),
+      markerId: const MarkerId('destination_marker'),
       position: LatLng(destinationLatLng.latitude, destinationLatLng.longitude),
     );
 
-    _getDirections(_sourceLatLng, destinationLatLng);
+    _getDirections(sourceLatLng, destinationLatLng);
 
-    return [source_marker, destination_marker];
+    return [sourceMarker, destinationMarker];
   }
 
   Future<void> _getDirections(LatLng source, LatLng destination) async {
@@ -108,8 +106,8 @@ class _MapScreenState extends State<MapScreen> {
     setState(() {
       polylines.clear();
       polylines.add(Polyline(
-          polylineId: PolylineId('route'),
-          color: Color(0xffffa700),
+          polylineId: const PolylineId('route'),
+          color: const Color(0xffffa700),
           zIndex: 10,
           points: points));
     });
@@ -325,7 +323,7 @@ class _MapScreenState extends State<MapScreen> {
                       ],
                     ),
                     ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: _placeList.length,
                         itemBuilder: (context, index) {
@@ -346,7 +344,7 @@ class _MapScreenState extends State<MapScreen> {
                                 }
                               });
                             },
-                            leading: Icon(
+                            leading: const Icon(
                               Icons.location_on_outlined,
                               color: Colors.white30,
                             ),
@@ -368,7 +366,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _showConfirmationDialog(
-      String _source, String _destination) async {
+      String source, String destination) async {
     return showDialog(
       context: context,
       builder: ((context) {
@@ -389,7 +387,8 @@ class _MapScreenState extends State<MapScreen> {
                   decoration: BoxDecoration(
                       border: Border.all(),
                       color: const Color(0xff25202C),
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
                   child: Column(
                     children: [
                       Row(
@@ -404,7 +403,7 @@ class _MapScreenState extends State<MapScreen> {
                           Expanded(
                             flex: 4,
                             child: Text(
-                              _source,
+                              source,
                               style: GoogleFonts.roboto(
                                   fontSize: 18, color: Colors.white),
                             ),
@@ -427,7 +426,7 @@ class _MapScreenState extends State<MapScreen> {
                           Expanded(
                             flex: 4,
                             child: Text(
-                              _destination,
+                              destination,
                               style: GoogleFonts.roboto(
                                   fontSize: 18, color: Colors.white),
                             ),
@@ -476,7 +475,7 @@ class _MapScreenState extends State<MapScreen> {
                             style: GoogleFonts.roboto(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xffffa700),
+                              color: const Color(0xffffa700),
                             ),
                           ),
                         ),

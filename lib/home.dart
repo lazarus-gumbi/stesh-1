@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:stesh/map.dart';
 import 'package:stesh/travel.dart';
 import 'package:stesh/wallet.dart';
@@ -15,7 +13,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  List _pages = [MapScreen(), WalletScrren(), TravelScreen()];
+  final List _pages = [
+    const MapScreen(),
+    const WalletScrren(),
+    const TravelScreen()
+  ];
 
   // changing the selected tab on the bottom navigation
   _changeTab(int index) {
@@ -33,9 +35,9 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _selectedIndex,
           onTap: (index) => _changeTab(index),
           showUnselectedLabels: false,
-          selectedItemColor: Color.fromRGBO(255, 167, 0, 1),
-          unselectedItemColor: Color(0xff25202C),
-          items: [
+          selectedItemColor: const Color.fromRGBO(255, 167, 0, 1),
+          unselectedItemColor: const Color(0xff25202C),
+          items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.map_outlined), label: "Map"),
             BottomNavigationBarItem(

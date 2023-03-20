@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:stesh/index.dart';
 import 'package:stesh/sign_up.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
   }
 
   // This widget is the root of your application.
@@ -30,10 +31,10 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.amber,
         textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Color(0xff25202C),
+              bodyColor: const Color(0xff25202C),
             ),
       ),
-      home: SignUpScreen(),
+      home: const IndexScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
