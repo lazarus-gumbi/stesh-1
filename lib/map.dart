@@ -307,7 +307,8 @@ class _MapScreenState extends State<MapScreen> {
                                     ? () {
                                         _showConfirmationDialog(
                                             _sourceController.text,
-                                            _destinationController.text);
+                                            _destinationController.text,
+                                            _markers);
                                         _addMarkersToMap(_sourceController.text,
                                             _destinationController.text);
                                       }
@@ -366,7 +367,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _showConfirmationDialog(
-      String source, String destination) async {
+      String source, String destination, List markers) async {
     return showDialog(
       context: context,
       builder: ((context) {
@@ -466,6 +467,7 @@ class _MapScreenState extends State<MapScreen> {
                           minimumSize: const Size.fromHeight(50),
                         ),
                         onPressed: () {
+                          markers = [];
                           Navigator.of(context, rootNavigator: true).pop();
                         },
                         child: Padding(
