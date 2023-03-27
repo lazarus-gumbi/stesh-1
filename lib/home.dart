@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stesh/constants.dart';
 import 'package:stesh/map.dart';
 import 'package:stesh/travel.dart';
 import 'package:stesh/wallet.dart';
@@ -35,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _selectedIndex,
           onTap: (index) => _changeTab(index),
           showUnselectedLabels: false,
-          selectedItemColor: const Color.fromRGBO(255, 167, 0, 1),
-          unselectedItemColor: const Color(0xff25202C),
+          selectedItemColor: Constants.mySecondaryColor,
+          unselectedItemColor: Constants.myDark,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.map_outlined), label: "Map"),

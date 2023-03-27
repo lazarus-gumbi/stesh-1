@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stesh/constants.dart';
 import 'package:stesh/home.dart';
 import 'package:stesh/sign_up.dart';
 
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(25.0),
           height: height,
           width: width,
-          color: const Color(0xff25202C),
+          color: Constants.myDark,
           child: Column(
             children: [
               Expanded(
@@ -126,8 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               }),
                               style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),
-                                  backgroundColor:
-                                      const Color.fromRGBO(255, 167, 0, 1),
+                                  backgroundColor: Constants.mySecondaryColor,
                                   elevation: 0,
                                   padding: const EdgeInsets.only(
                                       top: 15.0, bottom: 15.0)),

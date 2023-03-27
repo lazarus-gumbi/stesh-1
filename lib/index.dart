@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stesh/constants.dart';
 import 'package:stesh/driverLogin.dart';
 import 'package:stesh/login.dart';
-import 'package:stesh/sign_up.dart';
 
 class IndexScreen extends StatefulWidget {
   const IndexScreen({super.key});
@@ -15,7 +15,7 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffa700),
+      backgroundColor: Constants.mySecondaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -24,7 +24,7 @@ class _IndexScreenState extends State<IndexScreen> {
               width: 200,
               height: 50,
               decoration: BoxDecoration(
-                color: const Color(0xff25202C),
+                color: Constants.myDark,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: MaterialButton(
@@ -51,7 +51,7 @@ class _IndexScreenState extends State<IndexScreen> {
               width: 200,
               height: 50,
               decoration: BoxDecoration(
-                color: const Color(0xff25202C),
+                color: Constants.myDark,
                 borderRadius: BorderRadius.circular(50),
               ),
               child: MaterialButton(

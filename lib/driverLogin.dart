@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stesh/constants.dart';
 import 'package:stesh/driverHome.dart';
 import 'package:stesh/sign_up.dart';
 
@@ -119,14 +120,14 @@ class _DriverLoginScreenState extends State<DriverLoginScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DriverHomeScreen(),
+                                    builder: (context) =>
+                                        const DriverHomeScreen(),
                                   ),
                                 );
                               }),
                               style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder(),
-                                  backgroundColor:
-                                      const Color.fromRGBO(255, 167, 0, 1),
+                                  backgroundColor: Constants.mySecondaryColor,
                                   elevation: 0,
                                   padding: const EdgeInsets.only(
                                       top: 15.0, bottom: 15.0)),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:stesh/constants.dart';
 
 class TravelScreen extends StatefulWidget {
   const TravelScreen({super.key});
@@ -96,7 +95,7 @@ class _TravelScreenState extends State<TravelScreen> {
                           children: [
                             const Icon(
                               Icons.location_on_outlined,
-                              color: Color(0xffffa700),
+                              color: Constants.mySecondaryColor,
                             ),
                             const SizedBox(
                               width: 10,
@@ -112,7 +111,7 @@ class _TravelScreenState extends State<TravelScreen> {
                           children: [
                             const Icon(
                               Icons.circle_outlined,
-                              color: Color(0xffffa700),
+                              color: Constants.mySecondaryColor,
                               size: 20,
                             ),
                             const SizedBox(
@@ -186,7 +185,7 @@ class _TravelScreenState extends State<TravelScreen> {
                             children: [
                               const Icon(
                                 Icons.location_on,
-                                color: Color.fromRGBO(255, 167, 0, 1),
+                                color: Constants.mySecondaryColor,
                               ),
                               const SizedBox(
                                 width: 10,
@@ -194,7 +193,7 @@ class _TravelScreenState extends State<TravelScreen> {
                               Text(
                                 element['source'],
                                 style: GoogleFonts.robotoMono(
-                                    color: const Color(0xff25202C),
+                                    color: Constants.myDark,
                                     // fontSize: 20,
                                     fontWeight: FontWeight.w600),
                               )
@@ -210,7 +209,7 @@ class _TravelScreenState extends State<TravelScreen> {
                                   ),
                                   const Icon(
                                     Icons.circle,
-                                    color: const Color(0xff25202C),
+                                    color: Constants.myDark,
                                     size: 16,
                                   ),
                                   const SizedBox(
@@ -219,7 +218,7 @@ class _TravelScreenState extends State<TravelScreen> {
                                   Text(
                                     element['destination'],
                                     style: GoogleFonts.robotoMono(
-                                        color: const Color(0xff25202C),
+                                        color: Constants.myDark,
                                         // fontSize: 20,
                                         fontWeight: FontWeight.w600),
                                   )
@@ -228,7 +227,7 @@ class _TravelScreenState extends State<TravelScreen> {
                               Text(
                                 element["price"],
                                 style: GoogleFonts.robotoMono(
-                                    color: Color.fromRGBO(255, 167, 0, 1),
+                                    color: Constants.mySecondaryColor,
                                     // fontSize: 20,
                                     fontWeight: FontWeight.w600),
                               )
@@ -276,7 +275,7 @@ class _TravelScreenState extends State<TravelScreen> {
                             },
                             child: const Icon(
                               Icons.close,
-                              color: Color(0xffffa700),
+                              color: Constants.mySecondaryColor,
                             ))
                       ],
                     ),
@@ -354,7 +353,7 @@ class _TravelScreenState extends State<TravelScreen> {
                         //  TODO: confirm all fields are filled then add to the cards datastructure
                       },
                       style: ElevatedButton.styleFrom(
-                          primary: const Color(0xff25202C),
+                          primary: Constants.myDark,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -366,7 +365,7 @@ class _TravelScreenState extends State<TravelScreen> {
                           'Call Driver',
                           style: TextStyle(
                               fontSize: 16,
-                              color: Color(0xffffa700),
+                              color: Constants.mySecondaryColor,
                               fontWeight: FontWeight.w700),
                         ),
                       ),

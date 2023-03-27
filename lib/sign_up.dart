@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stesh/constants.dart';
 import 'package:stesh/login.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       body: Container(
         height: height,
         width: width,
-        color: const Color.fromRGBO(255, 167, 0, 1),
+        color: Constants.mySecondaryColor,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -140,14 +141,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           color: Colors.white,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w700),
-                                      enabledBorder: UnderlineInputBorder(
+                                      enabledBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               width: 1, color: Colors.white)),
                                       hintText: 'Car Brand'),
                                   style: GoogleFonts.roboto(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 TextField(
@@ -157,14 +158,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           color: Colors.white,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w700),
-                                      enabledBorder: UnderlineInputBorder(
+                                      enabledBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               width: 1, color: Colors.white)),
                                       hintText: 'Car Model'),
                                   style: GoogleFonts.roboto(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 TextField(
@@ -174,14 +175,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           color: Colors.white,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w700),
-                                      enabledBorder: UnderlineInputBorder(
+                                      enabledBorder: const UnderlineInputBorder(
                                           borderSide: BorderSide(
                                               width: 1, color: Colors.white)),
                                       hintText: 'License Plate #'),
                                   style: GoogleFonts.roboto(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 15,
                                 ),
                                 TextField(
@@ -209,7 +210,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           width: 24.0,
                           child: Checkbox(
                               activeColor: Colors.white,
-                              checkColor: const Color.fromRGBO(255, 167, 0, 1),
+                              checkColor: Constants.mySecondaryColor,
                               value: _isDriver,
                               onChanged: (bool? value) {
                                 setState(() {
@@ -242,7 +243,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 elevation: 0,
                                 padding: const EdgeInsets.only(
                                     top: 15.0, bottom: 15.0),
-                                primary: const Color(0xff25202C),
+                                primary: Constants.myDark,
                               ),
                               child: Text(
                                 "Create",
@@ -271,7 +272,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     child: Text(
                       "LOGIN",
                       style: GoogleFonts.roboto(
-                          color: const Color(0xff25202C),
+                          color: Constants.myDark,
                           fontSize: 20,
                           fontWeight: FontWeight.w700,
                           decoration: TextDecoration.underline),

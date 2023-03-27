@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:stesh/constants.dart';
 
 class DriverHomeScreen extends StatefulWidget {
   const DriverHomeScreen({super.key});
@@ -33,11 +34,11 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                   title: Column(children: [
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.location_on_outlined,
-                          color: Color(0xffffa700),
+                          color: Constants.mySecondaryColor,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         Text(
@@ -49,12 +50,12 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     ),
                     Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.circle_outlined,
-                          color: Color(0xffffa700),
+                          color: Constants.mySecondaryColor,
                           size: 23,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         ),
                         Text(
@@ -69,7 +70,7 @@ class _DriverHomeScreenState extends State<DriverHomeScreen> {
                     // width: 200,
                     // height: 50,
                     decoration: BoxDecoration(
-                      color: const Color(0xff25202C),
+                      color: Constants.myDark,
                       borderRadius: BorderRadius.circular(50),
                     ),
                     child: MaterialButton(

@@ -6,6 +6,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stesh/constants.dart';
 import 'package:stesh/secrets.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +19,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  // screen file
   late GoogleMapController _mapController;
   static const LatLng _MapCenter = LatLng(-26.31667, 31.13333);
   static final CameraPosition _InitialPosition =
@@ -107,7 +109,7 @@ class _MapScreenState extends State<MapScreen> {
       polylines.clear();
       polylines.add(Polyline(
           polylineId: const PolylineId('route'),
-          color: const Color(0xffffa700),
+          color: Constants.mySecondaryColor,
           zIndex: 10,
           points: points));
     });
@@ -206,7 +208,7 @@ class _MapScreenState extends State<MapScreen> {
             polylines: polylines,
           ),
           Container(
-            color: const Color(0xff25202C),
+            color: Constants.myDark,
             padding: const EdgeInsets.fromLTRB(15, 40, 20, 20),
             child: Wrap(
               children: [
@@ -218,7 +220,7 @@ class _MapScreenState extends State<MapScreen> {
                           flex: 1,
                           child: Icon(
                             Icons.location_on,
-                            color: Color(0xffffa700),
+                            color: Constants.mySecondaryColor,
                           ),
                         ),
                         Expanded(
@@ -271,7 +273,7 @@ class _MapScreenState extends State<MapScreen> {
                           child: Icon(
                             Icons.circle,
                             size: 18,
-                            color: Color(0xffffa700),
+                            color: Constants.mySecondaryColor,
                           ),
                         ),
                         Expanded(
@@ -315,7 +317,7 @@ class _MapScreenState extends State<MapScreen> {
                                     : null,
                                 icon: const Icon(
                                   Icons.search,
-                                  color: Color(0xffffa700),
+                                  color: Constants.mySecondaryColor,
                                 ),
                               ),
                             ),
@@ -387,7 +389,7 @@ class _MapScreenState extends State<MapScreen> {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                       border: Border.all(),
-                      color: const Color(0xff25202C),
+                      color: Constants.myDark,
                       borderRadius:
                           const BorderRadius.all(Radius.circular(20))),
                   child: Column(
@@ -398,7 +400,7 @@ class _MapScreenState extends State<MapScreen> {
                             flex: 1,
                             child: Icon(
                               Icons.location_on_outlined,
-                              color: Color(0xffffa700),
+                              color: Constants.mySecondaryColor,
                             ),
                           ),
                           Expanded(
@@ -421,7 +423,7 @@ class _MapScreenState extends State<MapScreen> {
                             child: Icon(
                               size: 16,
                               Icons.circle_outlined,
-                              color: Color(0xffffa700),
+                              color: Constants.mySecondaryColor,
                             ),
                           ),
                           Expanded(
@@ -441,7 +443,7 @@ class _MapScreenState extends State<MapScreen> {
                         "E 230.00",
                         style: GoogleFonts.robotoMono(
                           fontSize: 30,
-                          color: const Color(0xffffa700),
+                          color: Constants.mySecondaryColor,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -459,7 +461,7 @@ class _MapScreenState extends State<MapScreen> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xff25202C),
+                          primary: Constants.myDark,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -477,7 +479,7 @@ class _MapScreenState extends State<MapScreen> {
                             style: GoogleFonts.roboto(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: const Color(0xffffa700),
+                              color: Constants.mySecondaryColor,
                             ),
                           ),
                         ),
@@ -489,7 +491,7 @@ class _MapScreenState extends State<MapScreen> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: const Color(0xffffa700),
+                          primary: Constants.mySecondaryColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),

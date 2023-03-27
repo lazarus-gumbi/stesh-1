@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:stesh/constants.dart';
 import 'package:stesh/index.dart';
-import 'package:stesh/sign_up.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.amber,
         textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: const Color(0xff25202C),
+              bodyColor: Constants.myDark,
             ),
       ),
       home: const IndexScreen(),
