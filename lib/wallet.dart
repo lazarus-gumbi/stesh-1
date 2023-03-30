@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:stesh/constants.dart';
 
@@ -23,7 +21,7 @@ class _WalletScrrenState extends State<WalletScrren> {
       padding: const EdgeInsets.fromLTRB(15, 5, 15, 15),
       child: Column(
         children: [
-          Container(
+          SizedBox(
             width: width,
             height: 60,
             child: Row(
@@ -110,7 +108,7 @@ class _WalletScrrenState extends State<WalletScrren> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
-          child: Container(
+          child: SizedBox(
             height: 350,
             child: Padding(
               padding: const EdgeInsets.all(15.0),
@@ -154,8 +152,8 @@ class _WalletScrrenState extends State<WalletScrren> {
                     height: 15,
                   ),
                   Row(
-                    children: [
-                      const Expanded(
+                    children: const [
+                      Expanded(
                         flex: 2,
                         child: TextField(
                           decoration: InputDecoration(
@@ -170,13 +168,13 @@ class _WalletScrrenState extends State<WalletScrren> {
                               iconColor: Constants.myDark),
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         width: 10,
                       ),
-                      const Expanded(
+                      Expanded(
                         flex: 2,
-                        child: const TextField(
-                          decoration: const InputDecoration(
+                        child: TextField(
+                          decoration: InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     width: 1, color: Constants.myDark),
